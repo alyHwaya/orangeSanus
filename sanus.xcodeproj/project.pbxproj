@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C92BB90A2701B3590010FF76 /* dailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92BB9092701B3590010FF76 /* dailyViewController.swift */; };
+		C92BB90C2701B5FB0010FF76 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92BB90B2701B5FB0010FF76 /* Food.swift */; };
+		C92BB90E2701C0B70010FF76 /* dailyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92BB90D2701C0B70010FF76 /* dailyCell.swift */; };
+		C92BB9102701E7060010FF76 /* lunch2.png in Resources */ = {isa = PBXBuildFile; fileRef = C92BB90F2701E7060010FF76 /* lunch2.png */; };
+		C92BB9122701EB660010FF76 /* UtilFun.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92BB9112701EB660010FF76 /* UtilFun.swift */; };
+		C92BB91427021C830010FF76 /* newFoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92BB91327021C830010FF76 /* newFoodViewController.swift */; };
 		C95EDABA26FA3515003F5655 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EDAB926FA3515003F5655 /* AppDelegate.swift */; };
 		C95EDABC26FA3515003F5655 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EDABB26FA3515003F5655 /* SceneDelegate.swift */; };
 		C95EDABE26FA3515003F5655 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EDABD26FA3515003F5655 /* ViewController.swift */; };
@@ -36,6 +42,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C92BB9092701B3590010FF76 /* dailyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dailyViewController.swift; sourceTree = "<group>"; };
+		C92BB90B2701B5FB0010FF76 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
+		C92BB90D2701C0B70010FF76 /* dailyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dailyCell.swift; sourceTree = "<group>"; };
+		C92BB90F2701E7060010FF76 /* lunch2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lunch2.png; sourceTree = "<group>"; };
+		C92BB9112701EB660010FF76 /* UtilFun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilFun.swift; sourceTree = "<group>"; };
+		C92BB91327021C830010FF76 /* newFoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newFoodViewController.swift; sourceTree = "<group>"; };
 		C95EDAB626FA3515003F5655 /* sanus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sanus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C95EDAB926FA3515003F5655 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C95EDABB26FA3515003F5655 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -103,9 +115,15 @@
 				C95EDABB26FA3515003F5655 /* SceneDelegate.swift */,
 				C95EDABD26FA3515003F5655 /* ViewController.swift */,
 				C95EDABF26FA3515003F5655 /* Main.storyboard */,
+				C92BB9092701B3590010FF76 /* dailyViewController.swift */,
+				C92BB91327021C830010FF76 /* newFoodViewController.swift */,
+				C92BB9112701EB660010FF76 /* UtilFun.swift */,
+				C92BB90D2701C0B70010FF76 /* dailyCell.swift */,
+				C92BB90B2701B5FB0010FF76 /* Food.swift */,
 				C95EDAC226FA3517003F5655 /* Assets.xcassets */,
 				C95EDAC426FA3517003F5655 /* LaunchScreen.storyboard */,
 				C95EDAC726FA3517003F5655 /* Info.plist */,
+				C92BB90F2701E7060010FF76 /* lunch2.png */,
 			);
 			path = sanus;
 			sourceTree = "<group>";
@@ -232,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C95EDAC626FA3517003F5655 /* LaunchScreen.storyboard in Resources */,
+				C92BB9102701E7060010FF76 /* lunch2.png in Resources */,
 				C95EDAC326FA3517003F5655 /* Assets.xcassets in Resources */,
 				C95EDAC126FA3515003F5655 /* Main.storyboard in Resources */,
 			);
@@ -260,7 +279,12 @@
 			files = (
 				C95EDABE26FA3515003F5655 /* ViewController.swift in Sources */,
 				C95EDABA26FA3515003F5655 /* AppDelegate.swift in Sources */,
+				C92BB9122701EB660010FF76 /* UtilFun.swift in Sources */,
+				C92BB90C2701B5FB0010FF76 /* Food.swift in Sources */,
+				C92BB90A2701B3590010FF76 /* dailyViewController.swift in Sources */,
 				C95EDABC26FA3515003F5655 /* SceneDelegate.swift in Sources */,
+				C92BB90E2701C0B70010FF76 /* dailyCell.swift in Sources */,
+				C92BB91427021C830010FF76 /* newFoodViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
