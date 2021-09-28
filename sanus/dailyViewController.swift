@@ -9,6 +9,7 @@
 import UIKit
 
 class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UISearchControllerDelegate {
+    @IBOutlet weak var percentageLbl: UILabel!
     var filteredDb = [String : Food]()
     var fullDb = [String : Food]()
    
@@ -140,6 +141,9 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         totalCaloriesOut.text = "\(totalCal)"
         let progress = Float(totalCal/3000)
+        let percentage = Double(totalCal * 100/Double(maxDailyCal))
+        let percentageStr = String(format: "%.1f", percentage)
+        percentageLbl.text = "\(percentageStr)%"
         myProgressBar.progress = progress
         if totalCal > Double(maxDailyCal) {
             myProgressBar.tintColor = UIColor.red

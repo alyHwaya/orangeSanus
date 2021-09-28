@@ -81,3 +81,69 @@ extension UIViewController {
         }
     }
 }
+extension UIView {
+func applyGradient(colours: [UIColor]) -> Void {
+ let gradient: CAGradientLayer = CAGradientLayer()
+ gradient.frame = self.bounds
+ gradient.colors = colours.map { $0.cgColor }
+ gradient.startPoint = CGPoint(x : 0.5, y : 0.0)
+ gradient.endPoint = CGPoint(x :0.5, y: 1.0)
+ self.layer.insertSublayer(gradient, at: 0)
+ self.layer.sublayers![0].name = "gradient"
+ }
+}
+
+extension UIImage {
+    var averageColor: UIColor? {
+        guard let inputImage = CIImage(image: self) else { return nil }
+        let extentVector = CIVector(x: inputImage.extent.origin.x, y: inputImage.extent.origin.y, z: inputImage.extent.size.width, w: inputImage.extent.size.height)
+
+        guard let filter = CIFilter(name: "CIAreaAverage", parameters: [kCIInputImageKey: inputImage, kCIInputExtentKey: extentVector]) else { return nil }
+        guard let outputImage = filter.outputImage else { return nil }
+
+        var bitmap = [UInt8](repeating: 0, count: 4)
+        let context = CIContext(options: [.workingColorSpace: kCFNull])
+        context.render(outputImage, toBitmap: &bitmap, rowBytes: 4, bounds: CGRect(x: 0, y: 0, width: 1, height: 1), format: .RGBA8, colorSpace: nil)
+
+        return UIColor(red: CGFloat(bitmap[0]) / 255, green: CGFloat(bitmap[1]) / 255, blue: CGFloat(bitmap[2]) / 255, alpha: CGFloat(bitmap[3]) / 255)
+    }
+}
+extension UIColor {
+    var isLight: Bool {
+        var white: CGFloat = 0
+        getWhite(&white, alpha: nil)
+        return white > 0.5
+    }
+}
+extension UIImage {
+    class func scaleImageWithDivisor(img: UIImage, divisor: CGFloat) -> UIImage {
+        let size = CGSize(width: img.size.width/divisor, height: img.size.height/divisor)
+        UIGraphicsBeginImageContext(size)
+        img.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return scaledImage!
+    }
+    
+    class func scaleImage150x150(img: UIImage) -> UIImage {
+        let size = CGSize(width: 150, height: 150)
+        UIGraphicsBeginImageContext(size)
+        img.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return scaledImage!
+    }
+}
+extension UIView {
+    var textFieldsInView: [UITextField] {
+        return subviews
+            .filter ({ !($0 is UITextField) })
+            .reduce (( subviews.compactMap { $0 as? UITextField }), { summ, current in
+                return summ + current.textFieldsInView
+            })
+    }
+    var selectedTextField: UITextField? {
+        return textFieldsInView.filter { $0.isFirstResponder }.first
+    }
+}

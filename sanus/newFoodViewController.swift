@@ -209,10 +209,10 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         //amountUsed.text = "\(currentFoodType.taken)"
         pickedImage.image = UtilFun.convertBase64StringToImage(imageBase64String: currentFoodType.image)
         foodsDb = UtilFun.UnArchive(fromFileName: "foodList.aly")
-
-        
-        
+        addGradient()
     }
+    
+
     
     @objc func dismissKB(){
         self.view.endEditing(true)
@@ -251,6 +251,8 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         }else {
             print(pickerType)
             pickedImage.image = image
+            addGradient()
+            
         }
         
         
@@ -369,37 +371,18 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
             foodCalTxt.becomeFirstResponder()
         }
     }
+    func addGradient(){
+        self.view.backgroundColor = .white
+        let mycolor = pickedImage.image?.averageColor ?? .green
+        var secondColor = UIColor(ciColor: .white)
+        if mycolor.isLight{
+            secondColor = .gray
+        }
+        let sublayers = self.view.layer.sublayers![0].name
+        if sublayers == "gradient"{
+            self.view.layer.sublayers![0].removeFromSuperlayer()
+        }
+        self.view.applyGradient(colours: [mycolor, .black])
+    }
 }
 
-extension UIImage {
-    class func scaleImageWithDivisor(img: UIImage, divisor: CGFloat) -> UIImage {
-        let size = CGSize(width: img.size.width/divisor, height: img.size.height/divisor)
-        UIGraphicsBeginImageContext(size)
-        img.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return scaledImage!
-    }
-    
-    class func scaleImage150x150(img: UIImage) -> UIImage {
-        let size = CGSize(width: 150, height: 150)
-        UIGraphicsBeginImageContext(size)
-        img.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return scaledImage!
-    }
-}
-extension UIView {
-    var textFieldsInView: [UITextField] {
-        return subviews
-            .filter ({ !($0 is UITextField) })
-            .reduce (( subviews.compactMap { $0 as? UITextField }), { summ, current in
-                return summ + current.textFieldsInView
-            })
-    }
-    var selectedTextField: UITextField? {
-        return textFieldsInView.filter { $0.isFirstResponder }.first
-    }
-}
