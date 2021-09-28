@@ -17,7 +17,7 @@ class UtilFun{
         return image!
     }
     
-    public static func Archive(foodsDb: [Food], fileName: String){
+    public static func Archive(foodsDb: [String : Food], fileName: String){
         let filePath = getFileUrl(fileName: fileName)
         let json = try? JSONEncoder().encode(foodsDb)
         do {
@@ -35,11 +35,11 @@ class UtilFun{
         return path
     }
     
-    public static func UnArchive(fromFileName: String)-> [Food]{
+    public static func UnArchive(fromFileName: String)-> [String : Food]{
         let path = getFileUrl(fileName: fromFileName)
         //let jsonData = NSData(contentsOfMappedFile: path.path)
         var MyData = Data()
-        var MyDict = [Food]()
+        var MyDict = [String : Food]()
         do{
             let myJsonData = try Data(contentsOf: path)
             MyData = myJsonData
@@ -49,7 +49,7 @@ class UtilFun{
         print(MyData)
         // now decode the data to array
         let decoder = JSONDecoder()
-        if let decoded = try? decoder.decode([Food].self, from: MyData) {
+        if let decoded = try? decoder.decode([String : Food].self, from: MyData) {
             MyDict = decoded
         }
         // now reverse sort the array

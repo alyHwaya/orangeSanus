@@ -9,19 +9,22 @@
 import UIKit
 
 class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UISearchControllerDelegate {
-    var filteredDb = [Food]()
-    var fullDb = [Food]()
+    var filteredDb = [String : Food]()
+    var fullDb = [String : Food]()
    
     let mySearchController = UISearchController(searchResultsController: nil)
     
     func updateSearchResults(for searchController: UISearchController) {
+        print(fullDb)
         if searchController.searchBar.text != ""{
             foodsDb = fullDb
-        filteredDb = foodsDb.filter( { $0.name.range(of: searchController.searchBar.text ?? "", options: .caseInsensitive) != nil})
+            filteredDb = foodsDb.filter( { $0.key.range(of: searchController.searchBar.text ?? "", options: .caseInsensitive) != nil})
         foodsDb = filteredDb
         myTableView.reloadData()
         print(filteredDb)
-        }else {foodsDb = fullDb}
+        }else {foodsDb = fullDb
+            myTableView.reloadData()
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -29,6 +32,8 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let tempArr = Array(foodsDb.keys)
+        let FoodName = tempArr[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "dailyCell") as! dailyCell
         cell.selectedBtnOut.tag = indexPath.row
         cell.plusBtnOut.tag = indexPath.row
@@ -36,50 +41,59 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         cell.selectedBtnOut.addTarget(self, action: #selector(buttonSelected), for: .touchUpInside)
         cell.plusBtnOut.addTarget(self, action: #selector(buttonPlus), for: .touchUpInside)
         cell.minusBtnOut.addTarget(self, action: #selector(buttonMinus), for: .touchUpInside)
-        let str = foodsDb[indexPath.row].image
-        let img = UtilFun.convertBase64StringToImage(imageBase64String: str)
+        let str = foodsDb[FoodName]?.image
+        let img = UtilFun.convertBase64StringToImage(imageBase64String: str!)
         cell.myImage.image = img
-        cell.cellName.text = foodsDb[indexPath.row].name
-        if foodsDb[indexPath.row].isSelected{
+        cell.cellName.text = foodsDb[FoodName]?.name
+        if foodsDb[FoodName]!.isSelected{
             cell.selectedBtnOut.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
         }else{
             cell.selectedBtnOut.setImage(UIImage(systemName: "square"), for: .normal)
         }
-        cell.unitLbl.text = foodsDb[indexPath.row].unit
-        cell.calUnitLbl.text = "\(foodsDb[indexPath.row].calories)"
-        cell.takenAmountLbl.text = "\(foodsDb[indexPath.row].taken)"
+        cell.unitLbl.text = foodsDb[FoodName]?.unit
+        cell.calUnitLbl.text = "\(foodsDb[FoodName]!.calories)"
+        cell.takenAmountLbl.text = "\(foodsDb[FoodName]!.taken)"
         return cell
     }
     
     @objc func buttonSelected(sender: UIButton){
         print(sender.tag)
-        foodsDb[sender.tag].isSelected.toggle()
+        let tempArr = Array(foodsDb.keys)
+        let FoodName = tempArr[sender.tag]
+        foodsDb[FoodName]?.isSelected.toggle()
+        fullDb[FoodName]?.isSelected = foodsDb[FoodName]!.isSelected
         calculateTotalCalories()
         myTableView.reloadData()
     }
     @objc func buttonPlus(sender: UIButton){
         print(sender.tag)
-        var amount = foodsDb[sender.tag].taken
+        let tempArr = Array(foodsDb.keys)
+        let FoodName = tempArr[sender.tag]
+        var amount = foodsDb[FoodName]!.taken
         amount += 1
-        foodsDb[sender.tag].taken = amount
+        foodsDb[FoodName]?.taken = amount
+        fullDb[FoodName]?.taken = amount
         calculateTotalCalories()
         myTableView.reloadData()
     }
     
     @objc func buttonMinus(sender: UIButton){
         print(sender.tag)
-        var amount = foodsDb[sender.tag].taken
+        let tempArr = Array(foodsDb.keys)
+        let FoodName = tempArr[sender.tag]
+        var amount = foodsDb[FoodName]!.taken
         amount -= 1
         if amount < 0 {
             amount = 0
         }
-        foodsDb[sender.tag].taken = amount
+        foodsDb[FoodName]!.taken = amount
+        fullDb[FoodName]!.taken = amount
         calculateTotalCalories()
         myTableView.reloadData()
     }
     
     var totalCal = 0.0
-    var foodsDb = [Food]()
+    var foodsDb = [String : Food]()
     var maxDailyCal = 1800
     
     @IBOutlet weak var totalCaloriesOut: UILabel!
@@ -92,12 +106,13 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         mySearchController.delegate = self
         let myImg = UIImage(named: "lunch2.png")
         let imgStr = UtilFun.convertImageToBase64String(img: myImg!)
+        print(imgStr)
         let tempFood1 = Food(name: "test1", calories: 100, unit: "test1", servingSize: 1, recipe: "recipeeee", catigory: "fast food", ingredient: false, image: imgStr, taken: 1, selected: false)
-        let tempFood2 = Food(name: "test1", calories: 300, unit: "test1", servingSize: 1, recipe: "recipeeee", catigory: "fast food", ingredient: false, image: imgStr, taken: 1, selected: false)
-        let tempFood3 = Food(name: "test1", calories: 500, unit: "test1", servingSize: 1, recipe: "recipeeee", catigory: "fast food", ingredient: false, image: imgStr, taken: 1, selected: false)
+        let tempFood2 = Food(name: "test2", calories: 300, unit: "test1", servingSize: 1, recipe: "recipeeee", catigory: "fast food", ingredient: false, image: imgStr, taken: 1, selected: false)
+        let tempFood3 = Food(name: "test3", calories: 500, unit: "test1", servingSize: 1, recipe: "recipeeee", catigory: "fast food", ingredient: false, image: imgStr, taken: 1, selected: false)
         foodsDb = UtilFun.UnArchive(fromFileName: "foodList.aly")
         if foodsDb.isEmpty{
-        foodsDb = [tempFood1,tempFood2, tempFood3]
+            foodsDb = [tempFood1.name : tempFood1,tempFood2.name :tempFood2,tempFood3.name : tempFood3]
         }
         fullDb = foodsDb
         calculateTotalCalories()
@@ -108,11 +123,16 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         navigationItem.searchController = search
         // Do any additional setup after loading the view.
     }
+    override func viewDidAppear(_ animated: Bool) {
+        fullDb = foodsDb
+        calculateTotalCalories()
+    }
     
     func calculateTotalCalories(){
         
         totalCal = 0.0
-        for aFood in foodsDb{
+        for aFoodDic in fullDb{
+            let aFood = aFoodDic.value
             if aFood.isSelected{
             let caloriesPerFood = Double(aFood.taken) * aFood.calories
             totalCal = totalCal + caloriesPerFood
@@ -126,7 +146,7 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }else {
             myProgressBar.tintColor = UIColor.systemGreen
         }
-        UtilFun.Archive(foodsDb: foodsDb, fileName: "foodList.aly")
+        UtilFun.Archive(foodsDb: fullDb, fileName: "foodList.aly")
     }
 
     /*

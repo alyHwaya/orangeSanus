@@ -11,7 +11,7 @@ import SwiftUI
 import Vision
 
 class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UITextViewDelegate{
-    var foodsDb = [Food]()
+    var foodsDb = [String : Food]()
     var currentFoodType = Food(name: "", calories: 1, unit: "", servingSize: 1, recipe: "", catigory: "", ingredient: false, image: "", taken: 1, selected: false)
     var emptyFoodType = Food(name: "", calories: 1, unit: "", servingSize: 1, recipe: "", catigory: "", ingredient: false, image: "", taken: 1, selected: false)
     var recognizedTextArr : [String] = ["----"]
@@ -45,18 +45,19 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
 //        let myAmountUsed = currentFoodType.taken
         let theScaledImage = UIImage.scaleImage150x150(img: pickedImage.image!)
         var myFoodType: Food = Food(name: foodNameTxt.text ?? "Food", calories: myValue, unit: foodUnitTxt.text ?? "Unit", servingSize: myTaken, recipe: "", catigory: "", ingredient: false, image: UtilFun.convertImageToBase64String(img: theScaledImage), taken: currentFoodType.taken, selected: false)
-        var isFound = false
-        for aFood in foodsDb{
-            var index = 0
-            if aFood.name == myFoodType.name{
-                foodsDb[index] = myFoodType
-                isFound = true
-                index += 1
-            }
-        }
-        if !isFound {
-            foodsDb.append(myFoodType)
-        }
+        foodsDb.updateValue(myFoodType, forKey: myFoodType.name)
+//        var isFound = false
+//        for aFood in foodsDb{
+//            var index = 0
+//            if aFood.name == myFoodType.name{
+//                foodsDb[index] = myFoodType
+//                isFound = true
+//                index += 1
+//            }
+//        }
+//        if !isFound {
+//            foodsDb.append(myFoodType)
+//        }
         if myPicker.sourceType == .camera{
             UIImageWriteToSavedPhotosAlbum(pickedImage.image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
             print("Camera")
