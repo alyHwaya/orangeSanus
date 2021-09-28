@@ -9,21 +9,70 @@
 import UIKit
 
 class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UISearchControllerDelegate {
+    var chooseSelected = false
+    @IBOutlet weak var chooseSelectedBtnOut: UIButton!
+    @IBAction func chooseSelectedBtnAct(_ sender: Any) {
+        chooseSelected.toggle()
+        let tempFullFoodsDb = foodsDb
+        var tempDB = [String:Food]()
+        
+        if chooseSelected {
+            chooseSelectedBtnOut.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
+//            let tempArr = Array(tempFullFoodsDb)
+            
+            for aFood in tempFullFoodsDb {
+                if mySearchController.searchBar.text != ""{
+                    print(mySearchController.searchBar.text)
+                    if aFood.value.isSelected && aFood.value.name.lowercased().contains(mySearchController.searchBar.text!.lowercased()) {
+                    tempDB.updateValue(aFood.value, forKey: aFood.key)
+                }
+                }else{
+                    if aFood.value.isSelected{
+                        tempDB.updateValue(aFood.value, forKey: aFood.key)
+                    }
+                }
+            }
+            foodsDb = tempDB
+            myTableView.reloadData()
+        }else{
+            chooseSelectedBtnOut.setImage(UIImage(systemName: "square"), for: .normal)
+            if mySearchController.searchBar.text == ""{
+                foodsDb = fullDb
+            }else{
+                filteredDb = fullDb.filter( { $0.key.range(of: mySearchController.searchBar.text ?? "", options: .caseInsensitive) != nil})
+                foodsDb = filteredDb
+            }
+//            foodsDb = tempFullFoodsDb
+            myTableView.reloadData()
+        }
+    }
     @IBOutlet weak var percentageLbl: UILabel!
     var filteredDb = [String : Food]()
     var fullDb = [String : Food]()
+    var foodIndexToBeSentForEdit = Int()
    
-    let mySearchController = UISearchController(searchResultsController: nil)
+    var mySearchController = UISearchController(searchResultsController: nil)
     
     func updateSearchResults(for searchController: UISearchController) {
         print(fullDb)
+        mySearchController = searchController
         if searchController.searchBar.text != ""{
             foodsDb = fullDb
             filteredDb = foodsDb.filter( { $0.key.range(of: searchController.searchBar.text ?? "", options: .caseInsensitive) != nil})
+            if chooseSelected{
+                let temp = filteredDb.filter({ $0.value.isSelected.description.range(of: "true", options: .caseInsensitive) != nil})
+                filteredDb = temp
+            }
         foodsDb = filteredDb
         myTableView.reloadData()
         print(filteredDb)
-        }else {foodsDb = fullDb
+        }else {
+            if chooseSelected{
+                let temp = fullDb.filter({ $0.value.isSelected.description.range(of: "true", options: .caseInsensitive) != nil})
+                foodsDb = temp
+            }else{
+            foodsDb = fullDb
+            }
             myTableView.reloadData()
         }
     }
@@ -45,6 +94,10 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let str = foodsDb[FoodName]?.image
         let img = UtilFun.convertBase64StringToImage(imageBase64String: str!)
         cell.myImage.image = img
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        cell.myImage.tag = indexPath.row
+        cell.myImage.isUserInteractionEnabled = true
+        cell.myImage.addGestureRecognizer(tapGestureRecognizer)
         cell.cellName.text = foodsDb[FoodName]?.name
         if foodsDb[FoodName]!.isSelected{
             cell.selectedBtnOut.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
@@ -54,7 +107,17 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         cell.unitLbl.text = foodsDb[FoodName]?.unit
         cell.calUnitLbl.text = "\(foodsDb[FoodName]!.calories)"
         cell.takenAmountLbl.text = "\(foodsDb[FoodName]!.taken)"
+        let usedCal = foodsDb[FoodName]!.calories * Double(foodsDb[FoodName]!.taken)
+        cell.usedCalLbl.text = String(format: "%.1f", usedCal)
         return cell
+    }
+    
+    @objc func imageTapped(sender: Any)
+    {
+        let mySender = sender as! UITapGestureRecognizer
+        let index = mySender.view?.tag
+        performSegue(withIdentifier: "toDetails", sender: mySender.view)
+        
     }
     
     @objc func buttonSelected(sender: UIButton){
@@ -153,14 +216,21 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         UtilFun.Archive(foodsDb: fullDb, fileName: "foodList.aly")
     }
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toDetails"{
+            let mySender = sender as! UIImageView
+            let vc = segue.destination as! newFoodViewController
+            let tempArr = Array(foodsDb.keys)
+            let foodName = tempArr[mySender.tag]
+            vc.currentFoodType = foodsDb[foodName]!
+        }
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
 }

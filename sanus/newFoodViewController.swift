@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftUI
 import Vision
 
 class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UITextViewDelegate{
@@ -44,7 +43,7 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         let myTaken = myTakenStr.doubleValue
 //        let myAmountUsed = currentFoodType.taken
         let theScaledImage = UIImage.scaleImage150x150(img: pickedImage.image!)
-        var myFoodType: Food = Food(name: foodNameTxt.text ?? "Food", calories: myValue, unit: foodUnitTxt.text ?? "Unit", servingSize: myTaken, recipe: "", catigory: "", ingredient: false, image: UtilFun.convertImageToBase64String(img: theScaledImage), taken: currentFoodType.taken, selected: false)
+        let myFoodType: Food = Food(name: foodNameTxt.text ?? "Food", calories: myValue, unit: foodUnitTxt.text ?? "Unit", servingSize: myTaken, recipe: "", catigory: "", ingredient: false, image: UtilFun.convertImageToBase64String(img: theScaledImage), taken: currentFoodType.taken, selected: false)
         foodsDb.updateValue(myFoodType, forKey: myFoodType.name)
 //        var isFound = false
 //        for aFood in foodsDb{
