@@ -56,7 +56,18 @@ class UtilFun{
         print(MyDict)
         return MyDict
     }
-    
+    public static    func makeActivityIndicator(sender: UIView)-> UIActivityIndicatorView{
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.backgroundColor = .lightGray
+        activityIndicator.color = .orange
+        
+        sender.addSubview(activityIndicator)
+            activityIndicator.centerXAnchor.constraint(equalTo: sender.centerXAnchor).isActive = true
+            activityIndicator.centerYAnchor.constraint(equalTo: sender.centerYAnchor).isActive = true
+        activityIndicator.startAnimating()
+        return activityIndicator
+    }
 
 }
 

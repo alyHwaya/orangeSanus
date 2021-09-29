@@ -221,6 +221,7 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let spinner = UtilFun.makeActivityIndicator(sender: self.view)
         if segue.identifier == "toDetails"{
             let mySender = sender as! UIImageView
             let vc = segue.destination as! newFoodViewController
