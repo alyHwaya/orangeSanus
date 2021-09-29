@@ -13,6 +13,7 @@
 		C92BB9102701E7060010FF76 /* lunch2.png in Resources */ = {isa = PBXBuildFile; fileRef = C92BB90F2701E7060010FF76 /* lunch2.png */; };
 		C92BB9122701EB660010FF76 /* UtilFun.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92BB9112701EB660010FF76 /* UtilFun.swift */; };
 		C92BB91427021C830010FF76 /* newFoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92BB91327021C830010FF76 /* newFoodViewController.swift */; };
+		C931A6F0270462540066270E /* alyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C931A6EF270462540066270E /* alyDrawer.swift */; };
 		C95EDABA26FA3515003F5655 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EDAB926FA3515003F5655 /* AppDelegate.swift */; };
 		C95EDABC26FA3515003F5655 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EDABB26FA3515003F5655 /* SceneDelegate.swift */; };
 		C95EDABE26FA3515003F5655 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EDABD26FA3515003F5655 /* ViewController.swift */; };
@@ -48,6 +49,7 @@
 		C92BB90F2701E7060010FF76 /* lunch2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lunch2.png; sourceTree = "<group>"; };
 		C92BB9112701EB660010FF76 /* UtilFun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilFun.swift; sourceTree = "<group>"; };
 		C92BB91327021C830010FF76 /* newFoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newFoodViewController.swift; sourceTree = "<group>"; };
+		C931A6EF270462540066270E /* alyDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = alyDrawer.swift; sourceTree = "<group>"; };
 		C95EDAB626FA3515003F5655 /* sanus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sanus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C95EDAB926FA3515003F5655 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C95EDABB26FA3515003F5655 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				C95EDABB26FA3515003F5655 /* SceneDelegate.swift */,
 				C95EDABD26FA3515003F5655 /* ViewController.swift */,
 				C95EDABF26FA3515003F5655 /* Main.storyboard */,
+				C931A6EF270462540066270E /* alyDrawer.swift */,
 				C92BB9092701B3590010FF76 /* dailyViewController.swift */,
 				C92BB91327021C830010FF76 /* newFoodViewController.swift */,
 				C92BB9112701EB660010FF76 /* UtilFun.swift */,
@@ -281,6 +284,7 @@
 				C95EDABA26FA3515003F5655 /* AppDelegate.swift in Sources */,
 				C92BB9122701EB660010FF76 /* UtilFun.swift in Sources */,
 				C92BB90C2701B5FB0010FF76 /* Food.swift in Sources */,
+				C931A6F0270462540066270E /* alyDrawer.swift in Sources */,
 				C92BB90A2701B3590010FF76 /* dailyViewController.swift in Sources */,
 				C95EDABC26FA3515003F5655 /* SceneDelegate.swift in Sources */,
 				C92BB90E2701C0B70010FF76 /* dailyCell.swift in Sources */,

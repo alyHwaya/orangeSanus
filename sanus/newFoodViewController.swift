@@ -38,25 +38,12 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBAction func saveBtn(_ sender: Any) {
         let myValueStr = NSString(string: foodCalTxt.text ?? "0.0")
         let myTakenStr = NSString(string: servingSizeTxt.text ?? "1.0")
-        print("my taken \(myTakenStr)")
         let myValue = myValueStr.doubleValue
         let myTaken = myTakenStr.doubleValue
 //        let myAmountUsed = currentFoodType.taken
         let theScaledImage = UIImage.scaleImage150x150(img: pickedImage.image!)
         let myFoodType: Food = Food(name: foodNameTxt.text ?? "Food", calories: myValue, unit: foodUnitTxt.text ?? "Unit", servingSize: myTaken, recipe: "", catigory: "", ingredient: false, image: UtilFun.convertImageToBase64String(img: theScaledImage), taken: currentFoodType.taken, selected: false)
         foodsDb.updateValue(myFoodType, forKey: myFoodType.name)
-//        var isFound = false
-//        for aFood in foodsDb{
-//            var index = 0
-//            if aFood.name == myFoodType.name{
-//                foodsDb[index] = myFoodType
-//                isFound = true
-//                index += 1
-//            }
-//        }
-//        if !isFound {
-//            foodsDb.append(myFoodType)
-//        }
         if myPicker.sourceType == .camera{
             UIImageWriteToSavedPhotosAlbum(pickedImage.image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
             print("Camera")
@@ -67,6 +54,9 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
             print("Not camera")
         }
         UtilFun.Archive(foodsDb: foodsDb, fileName: "foodList.aly")
+        let myImg = UIImage(named: "lunch2.png")
+        let imgStr = UtilFun.convertImageToBase64String(img: myImg!)
+        emptyFoodType.image = imgStr
         currentFoodType = emptyFoodType
         foodCalTxt.text = "\(currentFoodType.calories)"
         foodNameTxt.text = currentFoodType.name
@@ -138,6 +128,13 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet var ingSwitchOutlet: UISwitch!
     
     
+    @IBOutlet weak var recipeBtnOut: UIButton!
+    @IBOutlet weak var ingredientLbl: UILabel!
+    @IBOutlet weak var servingSizeLbl: UILabel!
+    @IBOutlet weak var unitLbl: UILabel!
+    @IBOutlet weak var calPerUnitLbl: UILabel!
+    @IBOutlet weak var nameLbl: UILabel!
+    @IBOutlet weak var saveBtnOut: UIButton!
     @IBOutlet var servingSizeTxt: UITextField!
     @IBOutlet var foodNameTxt: UITextField!
     @IBOutlet var foodCalTxt: UITextField!
@@ -202,7 +199,6 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         foodCalTxt.text = "\(currentFoodType.calories)"
         foodNameTxt.text = currentFoodType.name
-        print(currentFoodType.name)
         foodUnitTxt.text = currentFoodType.unit
         servingSizeTxt.text = "\(currentFoodType.taken)"
         //amountUsed.text = "\(currentFoodType.taken)"
@@ -376,12 +372,31 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         var secondColor = UIColor(ciColor: .white)
         if mycolor.isLight{
             secondColor = .gray
+            saveBtnOut.setTitleColor(.black, for: .normal)
+            pageFoodTitle.textColor = .black
+            nameLbl.textColor = .black
+            calPerUnitLbl.textColor = .black
+            unitLbl.textColor = .black
+            servingSizeLbl.textColor = .black
+            ingredientLbl.textColor = .black
+            recipeBtnOut.setTitleColor(.black, for: .normal)
+            
+        }else{
+            saveBtnOut.setTitleColor(.white, for: .normal)
+            pageFoodTitle.textColor = .white
+            nameLbl.textColor = .white
+            calPerUnitLbl.textColor = .white
+            unitLbl.textColor = .white
+            servingSizeLbl.textColor = .white
+            ingredientLbl.textColor = .white
+            recipeBtnOut.setTitleColor(.white, for: .normal)
         }
         let sublayers = self.view.layer.sublayers![0].name
         if sublayers == "gradient"{
             self.view.layer.sublayers![0].removeFromSuperlayer()
         }
         self.view.applyGradient(colours: [mycolor, .black])
+        saveBtnOut.backgroundColor = mycolor
     }
 }
 
