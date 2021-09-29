@@ -172,6 +172,7 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var myTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         let buttonsDic : KeyValuePairs = ["btn1":"toRedView","Ingredients":"toGreenView","btn3":"toRedView","btn4":"toGreenView"]
         theDrawer.createDrawerVw(sender: self, widthToScreen: 0.3, btnsDic: buttonsDic, backgroundColor: .orange)
         hideDrawerWhenTappedAround(drawer: theDrawer)

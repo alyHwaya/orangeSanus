@@ -68,6 +68,51 @@ class UtilFun{
         activityIndicator.startAnimating()
         return activityIndicator
     }
+    
+    public static func myAdjustForKeyboard(notification: Notification, myScrollView: UIScrollView, txtFieldOrViewRect: CGRect, view: UIView) {
+        
+        /*
+         // 1-Add these to viewDidLoad
+         
+         (dont forget to make the viewcontroler a text field and view delegate and in here add self as delegate to the views
+         
+         let notificationCenter = NotificationCenter.default
+         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+         
+         // 2- add this to viewControler
+         @objc func adjustForKeyboard(notification: Notification) {
+             UtilFun.myAdjustForKeyboard(notification: notification, myScrollView: myScrollView, txtFieldOrViewRect: currentTxtFieldRect, view: self.view)
+         // 3- declair currentTxtFieldRect in the viewControler
+         var currentTxtFieldRect = CGRect(x: 0, y: 0, width: 0, height: 0)
+         
+         // 4- add this for textField
+         func textFieldDidBeginEditing(_ textField: UITextField) {
+             currentTxtFieldRect = textField.frame
+         }
+         
+         // 5- add this for textView
+         func textViewDidBeginEditing(_ textView: UITextView) {
+             currentTxtFieldRect = textView.frame
+         }
+         
+         */
+        guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+
+        let keyboardScreenEndFrame = keyboardValue.cgRectValue
+        let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+
+        if notification.name == UIResponder.keyboardWillHideNotification {
+            myScrollView.contentInset = .zero
+        } else {
+            myScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+        }
+
+        myScrollView.scrollIndicatorInsets = myScrollView.contentInset
+
+        
+        myScrollView.scrollRectToVisible(txtFieldOrViewRect, animated: true)
+    }
 
 }
 

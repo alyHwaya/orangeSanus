@@ -14,7 +14,7 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
     var currentFoodType = Food(name: "", calories: 1, unit: "", servingSize: 1, recipe: "", catigory: "", ingredient: false, image: "", taken: 1, selected: false)
     var emptyFoodType = Food(name: "", calories: 1, unit: "", servingSize: 1, recipe: "", catigory: "", ingredient: false, image: "", taken: 1, selected: false)
     var recognizedTextArr : [String] = ["----"]
-
+    var currentTxtFieldRect = CGRect(x: 0, y: 0, width: 0, height: 0)
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -42,7 +42,7 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         let myTaken = myTakenStr.doubleValue
 //        let myAmountUsed = currentFoodType.taken
         let theScaledImage = UIImage.scaleImage150x150(img: pickedImage.image!)
-        let myFoodType: Food = Food(name: foodNameTxt.text ?? "Food", calories: myValue, unit: foodUnitTxt.text ?? "Unit", servingSize: myTaken, recipe: "", catigory: "", ingredient: false, image: UtilFun.convertImageToBase64String(img: theScaledImage), taken: currentFoodType.taken, selected: false)
+        let myFoodType: Food = Food(name: foodNameTxt.text ?? "Food", calories: myValue, unit: foodUnitTxt.text ?? "Unit", servingSize: myTaken, recipe: recipeTxt.text, catigory: "", ingredient: false, image: UtilFun.convertImageToBase64String(img: theScaledImage), taken: currentFoodType.taken, selected: false)
         foodsDb.updateValue(myFoodType, forKey: myFoodType.name)
         if myPicker.sourceType == .camera{
             UIImageWriteToSavedPhotosAlbum(pickedImage.image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
@@ -62,12 +62,24 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         foodNameTxt.text = currentFoodType.name
         foodUnitTxt.text = currentFoodType.unit
         servingSizeTxt.text = "\(currentFoodType.taken)"
+        recipeTxt.text = currentFoodType.recipe
         // amountUsed.text = "\(currentFoodType.taken)"
         catTxt.text = "ALL ITEMS"
         pickedImage.image = UtilFun.convertBase64StringToImage(imageBase64String: currentFoodType.image)
         
 //        var myFoodType: foodType = foodType(name: foodNameTxt.text ?? "Food", checked: currentFoodType.checked, unit: foodUnitTxt.text ?? "Unit", value: myValue, takenUnit: myTaken, FoodImage: theScaledImage.pngData()!)
 //        myFoodType.taken = myAmountUsed
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        currentTxtFieldRect = textField.frame
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        currentTxtFieldRect = textView.frame
+        print("=========================\(currentTxtFieldRect.height)")
+        
     }
 
     @IBOutlet var catTxt: UITextField!
@@ -128,6 +140,9 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet var ingSwitchOutlet: UISwitch!
     
     
+    @IBOutlet weak var vwOfScrollVw: UIView!
+    @IBOutlet weak var recipeTxt: UITextView!
+    @IBOutlet weak var myScrollView: UIScrollView!
     @IBOutlet weak var recipeBtnOut: UIButton!
     @IBOutlet weak var ingredientLbl: UILabel!
     @IBOutlet weak var servingSizeLbl: UILabel!
@@ -166,6 +181,9 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         if currentFoodType.name == "" {
             let myImg = UIImage(named: "lunch2.png")
             let imgStr = UtilFun.convertImageToBase64String(img: myImg!)
@@ -177,6 +195,11 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         datePicker.delegate = self
         datePicker.dataSource = self
         catTxt.delegate = self
+        servingSizeTxt.delegate = self
+        foodCalTxt.delegate = self
+        foodNameTxt.delegate = self
+        foodUnitTxt.delegate = self
+        recipeTxt.delegate = self
         
         let toolbar = UIToolbar()
         let toolbarCat = UIToolbar()
@@ -196,7 +219,7 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         toolbarCat.setItems([spaceButton, doneButton], animated: false)
         catTxt.inputAccessoryView = toolbarCat
         // Do any additional setup after loading the view.
-        
+        recipeTxt.text = currentFoodType.recipe
         foodCalTxt.text = "\(currentFoodType.calories)"
         foodNameTxt.text = currentFoodType.name
         foodUnitTxt.text = currentFoodType.unit
@@ -207,7 +230,24 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         addGradient()
     }
     
-
+    @objc func adjustForKeyboard(notification: Notification) {
+        UtilFun.myAdjustForKeyboard(notification: notification, myScrollView: myScrollView, txtFieldOrViewRect: currentTxtFieldRect, view: self.view)
+//        guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+//
+//        let keyboardScreenEndFrame = keyboardValue.cgRectValue
+//        let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+//
+//        if notification.name == UIResponder.keyboardWillHideNotification {
+//            myScrollView.contentInset = .zero
+//        } else {
+//            myScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+//        }
+//
+//        myScrollView.scrollIndicatorInsets = myScrollView.contentInset
+//
+//
+//        myScrollView.scrollRectToVisible(currentTxtFieldRect, animated: true)
+    }
     
     @objc func dismissKB(){
         self.view.endEditing(true)
@@ -374,12 +414,12 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
             secondColor = .gray
             saveBtnOut.setTitleColor(.black, for: .normal)
             pageFoodTitle.textColor = .black
-            nameLbl.textColor = .black
-            calPerUnitLbl.textColor = .black
-            unitLbl.textColor = .black
-            servingSizeLbl.textColor = .black
-            ingredientLbl.textColor = .black
-            recipeBtnOut.setTitleColor(.black, for: .normal)
+            nameLbl.textColor = .white
+            calPerUnitLbl.textColor = .white
+            unitLbl.textColor = .white
+            servingSizeLbl.textColor = .white
+            ingredientLbl.textColor = .white
+            recipeBtnOut.setTitleColor(.white, for: .normal)
             
         }else{
             saveBtnOut.setTitleColor(.white, for: .normal)
