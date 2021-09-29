@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "lunch-3.svg",
+      "filename" : "lunch3.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "lunch-4.svg",
+      "filename" : "lunch3-1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "lunch-5.svg",
+      "filename" : "lunch3-2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }
