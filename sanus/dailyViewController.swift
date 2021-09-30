@@ -10,6 +10,22 @@ import UIKit
 
 class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UISearchControllerDelegate {
     var chooseSelected = false
+    var lockStateLocked = true
+    
+    @IBOutlet weak var lockBtnOut: UIButton!
+    @IBAction func lockBtnAct(_ sender: Any) {
+        lockStateLocked.toggle()
+        manageLock()
+    }
+    
+    func manageLock(){
+        if lockStateLocked {
+            lockBtnOut.setImage(UIImage(systemName: "lock"), for: .normal)
+        }else{
+            lockBtnOut.setImage(UIImage(systemName: "lock.open"), for: .normal)
+        }
+    }
+    
     @IBOutlet weak var chooseSelectedBtnOut: UIButton!
     @IBAction func chooseSelectedBtnAct(_ sender: Any) {
         chooseSelected.toggle()
@@ -121,6 +137,7 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         let mySender = sender as! UITapGestureRecognizer
         let index = mySender.view?.tag
+        
         performSegue(withIdentifier: "toDetails", sender: mySender.view)
         
     }
@@ -172,8 +189,8 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var myTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let buttonsDic : KeyValuePairs = ["btn1":"toRedView","Ingredients":"toGreenView","btn3":"toRedView","btn4":"toGreenView"]
+        manageLock()
+        let buttonsDic : KeyValuePairs = ["btn1":"toRedView","Ingredients":"toGreenView","Catigories":"toCatigories","btn4":"toGreenView"]
         theDrawer.createDrawerVw(sender: self, widthToScreen: 0.3, btnsDic: buttonsDic, backgroundColor: .orange)
         hideDrawerWhenTappedAround(drawer: theDrawer)
         myTableView.dataSource = self
@@ -182,9 +199,9 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let myImg = UIImage(named: "lunch2.png")
         let imgStr = UtilFun.convertImageToBase64String(img: myImg!)
         print(imgStr)
-        let tempFood1 = Food(name: "test1", calories: 100, unit: "test1", servingSize: 1, recipe: "recipeeee", catigory: "fast food", ingredient: false, image: imgStr, taken: 1, selected: false)
-        let tempFood2 = Food(name: "test2", calories: 300, unit: "test1", servingSize: 1, recipe: "recipeeee", catigory: "fast food", ingredient: false, image: imgStr, taken: 1, selected: false)
-        let tempFood3 = Food(name: "test3", calories: 500, unit: "test1", servingSize: 1, recipe: "recipeeee", catigory: "fast food", ingredient: false, image: imgStr, taken: 1, selected: false)
+        let tempFood1 = Food(name: "test1", calories: 100, unit: "test1", servingSize: 1, recipe: "Ingredients", catigory: "All", ingredient: false, image: imgStr, taken: 1, selected: false)
+        let tempFood2 = Food(name: "test2", calories: 300, unit: "test1", servingSize: 1, recipe: "Ingredients", catigory: "All", ingredient: false, image: imgStr, taken: 1, selected: false)
+        let tempFood3 = Food(name: "test3", calories: 500, unit: "test1", servingSize: 1, recipe: "Ingredients", catigory: "All", ingredient: false, image: imgStr, taken: 1, selected: false)
         foodsDb = UtilFun.UnArchive(fromFileName: "foodList.aly")
         if foodsDb.isEmpty{
             foodsDb = [tempFood1.name : tempFood1,tempFood2.name :tempFood2,tempFood3.name : tempFood3]
@@ -227,14 +244,31 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         UtilFun.Archive(foodsDb: fullDb, fileName: "foodList.aly")
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCell.EditingStyle.delete {
+            if !lockStateLocked{
+            let FoodName = foodsDbArr[indexPath.row]
+            foodsDb.removeValue(forKey: FoodName)
+            fullDb.removeValue(forKey: FoodName)
+            foodsDbArr.remove(at: indexPath.row)
+            UtilFun.Archive(foodsDb:fullDb , fileName: "foodList.aly")
+            calculateTotalCalories()
+            myTableView.reloadData()
+            }else{
+                UtilFun.simpleAlertActionSheet(title: "Locked", msg: "Press the lock to allow deteting meals", sender: self)
+            }
+        }
+      }
 
     
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        _ = UtilFun.makeActivityIndicator(sender: self.view)
+        
         if segue.identifier == "toDetails"{
+            _ = UtilFun.makeActivityIndicator(sender: self.view)
             let mySender = sender as! UIImageView
             let vc = segue.destination as! newFoodViewController
             let foodName = foodsDbArr[mySender.tag]

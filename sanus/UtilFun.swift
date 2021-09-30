@@ -113,6 +113,61 @@ class UtilFun{
         
         myScrollView.scrollRectToVisible(txtFieldOrViewRect, animated: true)
     }
+    
+    public static func getCatigories() -> [String]{
+        let defaults = UserDefaults.standard
+        var catigories = [String]()
+        if let catigoriesArr = defaults.value(forKey: "catigories"){
+            catigories = catigoriesArr as! [String]
+        }else{
+            catigories = ["All", "Breakfast", "Lunch", "Dinner", "Snacks", "Drinks"]
+        }
+        return catigories
+    }
+    public static func saveCatigories(catigories: [String]){
+        let defaults = UserDefaults.standard
+        defaults.set(catigories, forKey: "catigories")
+    }
+    public static func alertWithTextFld(title: String, msg: String, BtnTitle: String, senderVC: UIViewController, completionHandler: @escaping ((String)->())) {
+        var myTxt = UITextField()
+        let myAlertContr = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+//        myAlertContr.addTextField(configurationHandler: {tempTxtF in
+//            tempTxtF.textAlignment = .center
+//            tempTxtF.placeholder = "Date"
+//            let formatter = DateFormatter()
+//            formatter.dateFormat = "dd-MM-yyy"
+//            tempTxtF.text = formatter.string(from: Date())
+//
+//        })
+        myAlertContr.addTextField(configurationHandler: {tempTxtF in
+            tempTxtF.textAlignment = .center
+            tempTxtF.placeholder = "Catigorie"
+            myTxt = tempTxtF
+            //        self.caloriesTxtField.addTarget(self, action:  #selector(self.datePickerChanged(picker:)), for: .editingDidEnd)
+        })
+        myAlertContr.addAction(UIAlertAction(title: BtnTitle, style: .default, handler:  {
+            _ in
+            completionHandler(myTxt.text ?? "All")
+        }))
+        myAlertContr.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {
+            _ in
+            myAlertContr.dismiss(animated: true, completion: { print("kk")
+            })
+        }))
+        senderVC.present(myAlertContr, animated: false, completion: nil)
+        
+    }
+    
+    public static func simpleToast(title: String, msg: String, sender:Any){
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .actionSheet)
+        (sender as AnyObject).present(alert, animated: true, completion: nil)
+    }
+    
+    public static func simpleAlertActionSheet(title: String, msg: String, sender:Any){
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        (sender as AnyObject).present(alert, animated: true, completion: nil)
+    }
 
 }
 

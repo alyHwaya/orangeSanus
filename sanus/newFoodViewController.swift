@@ -11,8 +11,8 @@ import Vision
 
 class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UITextViewDelegate{
     var foodsDb = [String : Food]()
-    var currentFoodType = Food(name: "", calories: 1, unit: "", servingSize: 1, recipe: "", catigory: "", ingredient: false, image: "", taken: 1, selected: false)
-    var emptyFoodType = Food(name: "", calories: 1, unit: "", servingSize: 1, recipe: "", catigory: "", ingredient: false, image: "", taken: 1, selected: false)
+    var currentFoodType = Food(name: "", calories: 1, unit: "", servingSize: 1, recipe: "Ingredients", catigory: "All", ingredient: false, image: "", taken: 1, selected: false)
+    var emptyFoodType = Food(name: "", calories: 1, unit: "", servingSize: 1, recipe: "Ingredients", catigory: "All", ingredient: false, image: "", taken: 1, selected: false)
     var recognizedTextArr : [String] = ["----"]
     var currentTxtFieldRect = CGRect(x: 0, y: 0, width: 0, height: 0)
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -31,7 +31,7 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBAction func backBtn(_ sender: Any) {
         let myImg = UIImage(named: "lunch2.png")
         let imgStr = UtilFun.convertImageToBase64String(img: myImg!)
-        currentFoodType = Food(name: "", calories: 1, unit: "", servingSize: 1, recipe: "", catigory: "", ingredient: false, image: imgStr, taken: 1, selected: false)
+        currentFoodType = Food(name: "", calories: 1, unit: "", servingSize: 1, recipe: "Ingredients", catigory: "All", ingredient: false, image: imgStr, taken: 1, selected: false)
     }
     var myPicker = UIImagePickerController()
     
@@ -42,7 +42,7 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         let myTaken = myTakenStr.doubleValue
 //        let myAmountUsed = currentFoodType.taken
         let theScaledImage = UIImage.scaleImage150x150(img: pickedImage.image!)
-        let myFoodType: Food = Food(name: foodNameTxt.text ?? "Food", calories: myValue, unit: foodUnitTxt.text ?? "Unit", servingSize: myTaken, recipe: recipeTxt.text, catigory: "", ingredient: false, image: UtilFun.convertImageToBase64String(img: theScaledImage), taken: currentFoodType.taken, selected: false)
+        let myFoodType: Food = Food(name: foodNameTxt.text ?? "Food", calories: myValue, unit: foodUnitTxt.text ?? "Unit", servingSize: myTaken, recipe: recipeTxt.text, catigory: catTxt.text ?? "All", ingredient: false, image: UtilFun.convertImageToBase64String(img: theScaledImage), taken: currentFoodType.taken, selected: false)
         foodsDb.updateValue(myFoodType, forKey: myFoodType.name)
         if myPicker.sourceType == .camera{
             UIImageWriteToSavedPhotosAlbum(pickedImage.image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
@@ -66,9 +66,21 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         // amountUsed.text = "\(currentFoodType.taken)"
         catTxt.text = "ALL ITEMS"
         pickedImage.image = UtilFun.convertBase64StringToImage(imageBase64String: currentFoodType.image)
+        addGradient()
         
 //        var myFoodType: foodType = foodType(name: foodNameTxt.text ?? "Food", checked: currentFoodType.checked, unit: foodUnitTxt.text ?? "Unit", value: myValue, takenUnit: myTaken, FoodImage: theScaledImage.pngData()!)
 //        myFoodType.taken = myAmountUsed
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+          print("###########%%%%%%%%%%")
+              if textField.restorationIdentifier == "catName"{
+                  print("###########%%%%%%%%%%")
+                  catTxt.inputView = datePicker
+                  pickerType = "catName"
+                  recognizedTextArr = UtilFun.getCatigories()
+              }
+        return true
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -187,7 +199,7 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         if currentFoodType.name == "" {
             let myImg = UIImage(named: "lunch2.png")
             let imgStr = UtilFun.convertImageToBase64String(img: myImg!)
-            emptyFoodType = Food(name: "", calories: 1, unit: "", servingSize: 1, recipe: "", catigory: "", ingredient: false, image: imgStr, taken: 1, selected: false)
+            emptyFoodType = Food(name: "", calories: 1, unit: "", servingSize: 1, recipe: "Ingredients", catigory: "All", ingredient: false, image: imgStr, taken: 1, selected: false)
             currentFoodType = emptyFoodType
         }
         pageFoodTitle.text = currentFoodType.name
@@ -224,6 +236,7 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         foodNameTxt.text = currentFoodType.name
         foodUnitTxt.text = currentFoodType.unit
         servingSizeTxt.text = "\(currentFoodType.taken)"
+        catTxt.text = currentFoodType.category
         //amountUsed.text = "\(currentFoodType.taken)"
         pickedImage.image = UtilFun.convertBase64StringToImage(imageBase64String: currentFoodType.image)
         foodsDb = UtilFun.UnArchive(fromFileName: "foodList.aly")

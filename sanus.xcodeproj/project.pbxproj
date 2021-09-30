@@ -23,6 +23,7 @@
 		C95EDAD126FA3517003F5655 /* sanusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EDAD026FA3517003F5655 /* sanusTests.swift */; };
 		C95EDADB26FA3517003F5655 /* sanusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EDADA26FA3517003F5655 /* sanusUITests.swift */; };
 		C95EDADD26FA3517003F5655 /* sanusUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EDADC26FA3517003F5655 /* sanusUITestsLaunchTests.swift */; };
+		C9BCA1B12705D57500E47641 /* catigoriesTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BCA1B02705D57500E47641 /* catigoriesTVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		C95EDAD626FA3517003F5655 /* sanusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sanusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C95EDADA26FA3517003F5655 /* sanusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sanusUITests.swift; sourceTree = "<group>"; };
 		C95EDADC26FA3517003F5655 /* sanusUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sanusUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		C9BCA1B02705D57500E47641 /* catigoriesTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = catigoriesTVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				C95EDABB26FA3515003F5655 /* SceneDelegate.swift */,
 				C95EDABD26FA3515003F5655 /* ViewController.swift */,
 				C95EDABF26FA3515003F5655 /* Main.storyboard */,
+				C9BCA1B02705D57500E47641 /* catigoriesTVC.swift */,
 				C931A6EF270462540066270E /* alyDrawer.swift */,
 				C92BB9092701B3590010FF76 /* dailyViewController.swift */,
 				C92BB91327021C830010FF76 /* newFoodViewController.swift */,
@@ -285,6 +288,7 @@
 				C92BB9122701EB660010FF76 /* UtilFun.swift in Sources */,
 				C92BB90C2701B5FB0010FF76 /* Food.swift in Sources */,
 				C931A6F0270462540066270E /* alyDrawer.swift in Sources */,
+				C9BCA1B12705D57500E47641 /* catigoriesTVC.swift in Sources */,
 				C92BB90A2701B3590010FF76 /* dailyViewController.swift in Sources */,
 				C95EDABC26FA3515003F5655 /* SceneDelegate.swift in Sources */,
 				C92BB90E2701C0B70010FF76 /* dailyCell.swift in Sources */,
