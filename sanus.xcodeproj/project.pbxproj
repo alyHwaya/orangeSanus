@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C9169F442732858E008BB46E /* sportsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9169F432732858E008BB46E /* sportsCollectionViewCell.swift */; };
+		C9169F4627328693008BB46E /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9169F4527328693008BB46E /* Day.swift */; };
+		C9169F482732A273008BB46E /* DayMgmt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9169F472732A273008BB46E /* DayMgmt.swift */; };
 		C92BB90A2701B3590010FF76 /* dailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92BB9092701B3590010FF76 /* dailyViewController.swift */; };
 		C92BB90C2701B5FB0010FF76 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92BB90B2701B5FB0010FF76 /* Food.swift */; };
 		C92BB90E2701C0B70010FF76 /* dailyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92BB90D2701C0B70010FF76 /* dailyCell.swift */; };
@@ -23,6 +26,10 @@
 		C95EDAD126FA3517003F5655 /* sanusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EDAD026FA3517003F5655 /* sanusTests.swift */; };
 		C95EDADB26FA3517003F5655 /* sanusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EDADA26FA3517003F5655 /* sanusUITests.swift */; };
 		C95EDADD26FA3517003F5655 /* sanusUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EDADC26FA3517003F5655 /* sanusUITestsLaunchTests.swift */; };
+		C96EFCD9273AB8DF001E04EC /* ChartDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96EFCD8273AB8DF001E04EC /* ChartDetailViewController.swift */; };
+		C9865B3627312FD600A94399 /* chartTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9865B3527312FD600A94399 /* chartTableViewController.swift */; };
+		C9865B3827312FF000A94399 /* chartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9865B3727312FF000A94399 /* chartTableViewCell.swift */; };
+		C9865B3C2731529200A94399 /* exerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9865B3B2731529200A94399 /* exerciseViewController.swift */; };
 		C9BCA1B12705D57500E47641 /* catigoriesTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BCA1B02705D57500E47641 /* catigoriesTVC.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +51,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C9169F432732858E008BB46E /* sportsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sportsCollectionViewCell.swift; sourceTree = "<group>"; };
+		C9169F4527328693008BB46E /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
+		C9169F472732A273008BB46E /* DayMgmt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayMgmt.swift; sourceTree = "<group>"; };
 		C92BB9092701B3590010FF76 /* dailyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dailyViewController.swift; sourceTree = "<group>"; };
 		C92BB90B2701B5FB0010FF76 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		C92BB90D2701C0B70010FF76 /* dailyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dailyCell.swift; sourceTree = "<group>"; };
@@ -64,6 +74,10 @@
 		C95EDAD626FA3517003F5655 /* sanusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sanusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C95EDADA26FA3517003F5655 /* sanusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sanusUITests.swift; sourceTree = "<group>"; };
 		C95EDADC26FA3517003F5655 /* sanusUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sanusUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		C96EFCD8273AB8DF001E04EC /* ChartDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDetailViewController.swift; sourceTree = "<group>"; };
+		C9865B3527312FD600A94399 /* chartTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chartTableViewController.swift; sourceTree = "<group>"; };
+		C9865B3727312FF000A94399 /* chartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chartTableViewCell.swift; sourceTree = "<group>"; };
+		C9865B3B2731529200A94399 /* exerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exerciseViewController.swift; sourceTree = "<group>"; };
 		C9BCA1B02705D57500E47641 /* catigoriesTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = catigoriesTVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -119,13 +133,20 @@
 				C95EDABB26FA3515003F5655 /* SceneDelegate.swift */,
 				C95EDABD26FA3515003F5655 /* ViewController.swift */,
 				C95EDABF26FA3515003F5655 /* Main.storyboard */,
+				C96EFCD8273AB8DF001E04EC /* ChartDetailViewController.swift */,
+				C9169F432732858E008BB46E /* sportsCollectionViewCell.swift */,
+				C9865B3B2731529200A94399 /* exerciseViewController.swift */,
+				C9865B3527312FD600A94399 /* chartTableViewController.swift */,
+				C9865B3727312FF000A94399 /* chartTableViewCell.swift */,
 				C9BCA1B02705D57500E47641 /* catigoriesTVC.swift */,
 				C931A6EF270462540066270E /* alyDrawer.swift */,
 				C92BB9092701B3590010FF76 /* dailyViewController.swift */,
 				C92BB91327021C830010FF76 /* newFoodViewController.swift */,
 				C92BB9112701EB660010FF76 /* UtilFun.swift */,
+				C9169F472732A273008BB46E /* DayMgmt.swift */,
 				C92BB90D2701C0B70010FF76 /* dailyCell.swift */,
 				C92BB90B2701B5FB0010FF76 /* Food.swift */,
+				C9169F4527328693008BB46E /* Day.swift */,
 				C95EDAC226FA3517003F5655 /* Assets.xcassets */,
 				C95EDAC426FA3517003F5655 /* LaunchScreen.storyboard */,
 				C95EDAC726FA3517003F5655 /* Info.plist */,
@@ -283,16 +304,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9865B3C2731529200A94399 /* exerciseViewController.swift in Sources */,
 				C95EDABE26FA3515003F5655 /* ViewController.swift in Sources */,
+				C9169F4627328693008BB46E /* Day.swift in Sources */,
 				C95EDABA26FA3515003F5655 /* AppDelegate.swift in Sources */,
 				C92BB9122701EB660010FF76 /* UtilFun.swift in Sources */,
 				C92BB90C2701B5FB0010FF76 /* Food.swift in Sources */,
 				C931A6F0270462540066270E /* alyDrawer.swift in Sources */,
 				C9BCA1B12705D57500E47641 /* catigoriesTVC.swift in Sources */,
 				C92BB90A2701B3590010FF76 /* dailyViewController.swift in Sources */,
+				C96EFCD9273AB8DF001E04EC /* ChartDetailViewController.swift in Sources */,
 				C95EDABC26FA3515003F5655 /* SceneDelegate.swift in Sources */,
+				C9865B3827312FF000A94399 /* chartTableViewCell.swift in Sources */,
 				C92BB90E2701C0B70010FF76 /* dailyCell.swift in Sources */,
+				C9169F442732858E008BB46E /* sportsCollectionViewCell.swift in Sources */,
 				C92BB91427021C830010FF76 /* newFoodViewController.swift in Sources */,
+				C9169F482732A273008BB46E /* DayMgmt.swift in Sources */,
+				C9865B3627312FD600A94399 /* chartTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

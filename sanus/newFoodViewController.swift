@@ -64,12 +64,12 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         foodsDb.updateValue(myFoodType, forKey: myFoodType.name)
         if myPicker.sourceType == .camera{
             UIImageWriteToSavedPhotosAlbum(pickedImage.image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
-            print("Camera")
+//            print("Camera")
         }else{
             let ac = UIAlertController(title: "Saved!", message: "Your Food  has been saved.", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
-            print("Not camera")
+//            print("Not camera")
         }
         UtilFun.Archive(foodsDb: foodsDb, fileName: "foodList.aly")
         let myImg = UIImage(named: "lunch2.png")
@@ -163,23 +163,23 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
             myPicker.sourceType = .savedPhotosAlbum
         }
         guard let image = info[.editedImage] as? UIImage else {
-            print("No image found")
+//            print("No image found")
             return
         }
         
         // print out the image size as a test
-        print(image.size)
+//        print(image.size)
         
         if pickerType == "ocrName"{
-            print(pickerType)
+//            print(pickerType)
             let myString = OCR(image: image).joined(separator: "\n")
             foodNameTxt.text = myString
         }else if pickerType == "ocrData"{
-            print(pickerType)
+//            print(pickerType)
             let myString = OCR(image: image).joined(separator: "\n")
             foodCalTxt.text = myString
         }else {
-            print(pickerType)
+//            print(pickerType)
             pickedImage.image = image
             addGradient()
             
@@ -236,9 +236,9 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     // Text field and view delegate functions
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-          print("###########%%%%%%%%%%")
+//          print("###########%%%%%%%%%%")
               if textField.restorationIdentifier == "catName"{
-                  print("###########%%%%%%%%%%")
+//                  print("###########%%%%%%%%%%")
                   catTxt.inputView = datePicker
                   pickerType = "catName"
                   recognizedTextArr = UtilFun.getCatigories()
@@ -253,7 +253,7 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
     func textViewDidBeginEditing(_ textView: UITextView) {
         
         currentTxtFieldRect = textView.frame
-        print("=========================\(currentTxtFieldRect.height)")
+//        print("=========================\(currentTxtFieldRect.height)")
         
     }
     
@@ -266,12 +266,12 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
         let ac = UIAlertController(title: "Nutrition data", message: "Read the nutrition data from a photo or shoot it using your camera.", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Camera", style: .default, handler: {
             _ in
-            print(self.pickerType)
+//            print(self.pickerType)
             self.pickImageUsing(sourceType: .camera)
         }))
         ac.addAction(UIAlertAction(title: "Photos", style: .default, handler: {
             _ in
-            print(self.pickerType)
+//            print(self.pickerType)
             self.pickImageUsing(sourceType: .photoLibrary)
         }))
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
@@ -294,12 +294,12 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
             }
             for observation in observations {
                 guard let bestCandidate = observation.topCandidates(1).first else {
-                    print("No Data")
+//                    print("No Data")
                     continue
                 }
-                print("Found this candidate: \(bestCandidate.string)")
+//                print("Found this candidate: \(bestCandidate.string)")
                 self.recognizedTextArr.append(bestCandidate.string)
-                print(self.recognizedTextArr)
+//                print(self.recognizedTextArr)
             }
         }
         let requests = [request]
@@ -329,7 +329,7 @@ class newFoodViewController: UIViewController, UIImagePickerControllerDelegate, 
 //                }else{
 //                    calValStr = recognizedTextArr[index + 1]
 //                }
-                print(index)
+//                print(index)
                 calValStr = recognizedTextArr[index]
 //                var calValStrBefore = String()
 //                if index >= 1{

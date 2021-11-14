@@ -22,11 +22,13 @@ class UtilFun{
         let json = try? JSONEncoder().encode(foodsDb)
         do {
             try json!.write(to: filePath)
-            print("done aly")
+//            print("done aly")
         } catch {
-            print("Failed to write JSON data: \(error.localizedDescription)")
+//            print("Failed to write JSON data: \(error.localizedDescription)")
         }
     }
+    
+    
     public static func getFileUrl(fileName:String) -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let pathDirectory = paths[0]
@@ -44,18 +46,22 @@ class UtilFun{
             let myJsonData = try Data(contentsOf: path)
             MyData = myJsonData
         }catch{
-            print("Failed to read JSON data: \(error.localizedDescription)")
+//            print("Failed to read JSON data: \(error.localizedDescription)")
         }
-        print(MyData)
+//        print(MyData)
         // now decode the data to array
         let decoder = JSONDecoder()
         if let decoded = try? decoder.decode([String : Food].self, from: MyData) {
             MyDict = decoded
         }
         // now reverse sort the array
-        print(MyDict)
+//        print(MyDict)
         return MyDict
     }
+    
+   
+    
+    
     public static    func makeActivityIndicator(sender: UIView)-> UIActivityIndicatorView{
         let activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -115,7 +121,7 @@ class UtilFun{
     }
     
     public static func getCatigories() -> [String]{
-        let defaults = UserDefaults.standard
+//        let defaults = UserDefaults.standard
         var catigories = [String]()
         if let catigoriesArr = defaults.value(forKey: "catigories"){
             catigories = catigoriesArr as! [String]
@@ -125,7 +131,7 @@ class UtilFun{
         return catigories
     }
     public static func saveCatigories(catigories: [String]){
-        let defaults = UserDefaults.standard
+//        let defaults = UserDefaults.standard
         defaults.set(catigories, forKey: "catigories")
     }
     public static func alertWithTextFld(title: String, msg: String, BtnTitle: String, senderVC: UIViewController, completionHandler: @escaping ((String)->())) {
@@ -161,12 +167,28 @@ class UtilFun{
     public static func simpleToast(title: String, msg: String, sender:Any){
         let alert = UIAlertController(title: title, message: msg, preferredStyle: .actionSheet)
         (sender as AnyObject).present(alert, animated: true, completion: nil)
+        // change to desired number of seconds (in this case 5 seconds)
+        let when = DispatchTime.now() + 2
+        DispatchQueue.main.asyncAfter(deadline: when){
+          // your code with delay
+          alert.dismiss(animated: true, completion: nil)
+        }
     }
     
     public static func simpleAlertActionSheet(title: String, msg: String, sender:Any){
         let alert = UIAlertController(title: title, message: msg, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
         (sender as AnyObject).present(alert, animated: true, completion: nil)
+    }
+    
+    public static func resetData() {
+        let db = UnArchive(fromFileName: "foodList.aly")
+        for item in db{
+            let Food = item.value
+            Food.isSelected = false
+        }
+        Archive(foodsDb: db, fileName: "foodList.aly")
+        print("db \(db["test1"]?.isSelected)")
     }
 
 }
@@ -256,5 +278,11 @@ extension UIView {
     }
     var selectedTextField: UITextField? {
         return textFieldsInView.filter { $0.isFirstResponder }.first
+    }
+}
+
+extension Dictionary where Value: Equatable {
+    func key(from value: Value) -> Key? {
+        return self.first(where: { $0.value == value })?.key
     }
 }

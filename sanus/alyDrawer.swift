@@ -38,7 +38,7 @@ class alyDrawer: UIView {
             let btn1 = UIButton(frame: CGRect(x: 5, y: CGFloat(50 * i + 20 ), width: width - 10, height: 40))
             btn1.setTitle(btn.key, for: .normal)
             btn1.addAction {
-                print(btn.value)
+//                print(btn.value)
                 sender.performSegue(withIdentifier: btn.value, sender: sender)
             }
             btn1.restorationIdentifier = btn.value
@@ -97,9 +97,9 @@ extension UIViewController {
                 drawer.myBlur.alpha = 0
             })
             sender.drawer!.isShown = false
-            print("shown and dismissed")
+//            print("shown and dismissed")
         }
-            print("not shown and appeared")
+//            print("not shown and appeared")
         }
     }
     func dismissDrawerDromBtn(drawer: alyDrawer){

@@ -12,6 +12,27 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var chooseSelected = false
     var lockStateLocked = true
     
+    @IBOutlet weak var toSportsGymOut: UIButton!
+    @IBOutlet weak var toSportsBtnOut: UIButton!
+    @IBAction func resetBtnAct(_ sender: Any) {
+        let myAlert = UIAlertController(title: "Reset", message: "All items will be deselected", preferredStyle: .alert)
+        let okBtn = UIAlertAction(title: "Ok", style: .default, handler: {_ in
+            let dayToBeSaved = DayMgmt.updateDaysBeforeReset()
+            print("dayToBeSaved \(dayToBeSaved)")
+//            let newDay = Day(date: DayMgmt.convDateToStr(date: Date()), calories: 0, gym: "non", aerobics: "non2")
+//            DayMgmt.saveCurrDay(day: newDay)
+//            DayMgmt.saveCurrDate()
+            UtilFun.resetData()
+            self.loadData()
+            self.mySearchController.searchBar.text = ""
+            self.myTableView.reloadData()
+        })
+        let cancelBtn = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        myAlert.addAction(okBtn)
+        myAlert.addAction(cancelBtn)
+        self.present(myAlert, animated: true, completion: nil)
+        
+    }
     @IBOutlet weak var lockBtnOut: UIButton!
     @IBAction func lockBtnAct(_ sender: Any) {
         lockStateLocked.toggle()
@@ -85,7 +106,7 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         foodsDb = filteredDb
         foodsDbArr = Array(foodsDb.keys).sorted()
         myTableView.reloadData()
-        print(filteredDb)
+//        print(filteredDb)
         }else {
             if chooseSelected{
                 let temp = fullDb.filter({ $0.value.isSelected.description.range(of: "true", options: .caseInsensitive) != nil})
@@ -143,7 +164,7 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     @objc func buttonSelected(sender: UIButton){
-        print(sender.tag)
+//        print(sender.tag)
         
         let FoodName = foodsDbArr[sender.tag]
         foodsDb[FoodName]?.isSelected.toggle()
@@ -189,26 +210,19 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var myTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        DayMgmt.loadDay()
+        DayMgmt.setCurrDateDefault()
         manageLock()
+        
         let buttonsDic : KeyValuePairs = ["btn1":"toRedView","Ingredients":"toGreenView","Catigories":"toCatigories","btn4":"toGreenView"]
         theDrawer.createDrawerVw(sender: self, widthToScreen: 0.3, btnsDic: buttonsDic, backgroundColor: .orange)
         hideDrawerWhenTappedAround(drawer: theDrawer)
         myTableView.dataSource = self
         myTableView.delegate = self
         mySearchController.delegate = self
-        let myImg = UIImage(named: "lunch2.png")
-        let imgStr = UtilFun.convertImageToBase64String(img: myImg!)
-        print(imgStr)
-        let tempFood1 = Food(name: "test1", calories: 100, unit: "test1", servingSize: 1, recipe: "Ingredients", catigory: "All", ingredient: false, image: imgStr, taken: 1, selected: false)
-        let tempFood2 = Food(name: "test2", calories: 300, unit: "test1", servingSize: 1, recipe: "Ingredients", catigory: "All", ingredient: false, image: imgStr, taken: 1, selected: false)
-        let tempFood3 = Food(name: "test3", calories: 500, unit: "test1", servingSize: 1, recipe: "Ingredients", catigory: "All", ingredient: false, image: imgStr, taken: 1, selected: false)
-        foodsDb = UtilFun.UnArchive(fromFileName: "foodList.aly")
-        if foodsDb.isEmpty{
-            foodsDb = [tempFood1.name : tempFood1,tempFood2.name :tempFood2,tempFood3.name : tempFood3]
-        }
-        fullDb = foodsDb
-        foodsDbArr = Array(foodsDb.keys).sorted()
-        calculateTotalCalories()
+        
+        loadData()
+       
         let search = UISearchController(searchResultsController: nil)
         search.searchResultsUpdater = self
         search.obscuresBackgroundDuringPresentation = false
@@ -216,10 +230,27 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         navigationItem.searchController = search
         // Do any additional setup after loading the view.
     }
-//    override func viewDidAppear(_ animated: Bool) {
-//        fullDb = foodsDb
-//        calculateTotalCalories()
-//    }
+    override func viewDidAppear(_ animated: Bool) {
+        DayMgmt.prepareAerobicsBtn(btn: toSportsBtnOut)
+        DayMgmt.prepareGymBtn(btn: toSportsGymOut)
+    }
+    
+    func loadData(){
+//        let myImg = UIImage(named: "lunch2.png")
+//        let imgStr = UtilFun.convertImageToBase64String(img: myImg!)
+//        print(imgStr)
+//        let tempFood1 = Food(name: "test1", calories: 100, unit: "test1", servingSize: 1, recipe: "Ingredients", catigory: "All", ingredient: false, image: imgStr, taken: 1, selected: false)
+//        let tempFood2 = Food(name: "test2", calories: 300, unit: "test1", servingSize: 1, recipe: "Ingredients", catigory: "All", ingredient: false, image: imgStr, taken: 1, selected: false)
+//        let tempFood3 = Food(name: "test3", calories: 500, unit: "test1", servingSize: 1, recipe: "Ingredients", catigory: "All", ingredient: false, image: imgStr, taken: 1, selected: false)
+        foodsDb = UtilFun.UnArchive(fromFileName: "foodList.aly")
+        if foodsDb.isEmpty{
+            foodsDb = [:]
+//            foodsDb = [tempFood1.name : tempFood1,tempFood2.name :tempFood2,tempFood3.name : tempFood3]
+        }
+        fullDb = foodsDb
+        foodsDbArr = Array(foodsDb.keys).sorted()
+        calculateTotalCalories()
+    }
     
     func calculateTotalCalories(){
         
@@ -243,6 +274,9 @@ class dailyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             myProgressBar.tintColor = UIColor.systemGreen
         }
         UtilFun.Archive(foodsDb: fullDb, fileName: "foodList.aly")
+        let currDay = DayMgmt.getCurrentDay()
+        currDay.calories = totalCal
+        DayMgmt.saveCurrDay(day: currDay)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

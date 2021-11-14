@@ -12,15 +12,15 @@ class catigoriesTVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     @IBAction func addBtnAct(_ sender: Any) {
         UtilFun.alertWithTextFld(title: "Add Catigory", msg: "Enter catigory name", BtnTitle: "Add", senderVC: self, completionHandler: {
             newCat in
-            print("All----\(newCat)")
+//            print("All----\(newCat)")
             if !self.myDb.contains(newCat){
             if newCat != "All" && newCat != ""{
                 self.myDb.append(newCat)
-                print("not All")
+//                print("not All")
                 UtilFun.saveCatigories(catigories: self.myDb)
                 self.myTableView.reloadData()
             }else{
-                print("All")
+//                print("All")
             }
             }else{
                 UtilFun.simpleAlertActionSheet(title: "Duplicate catigory", msg: "This catigory already exists!", sender: self)
